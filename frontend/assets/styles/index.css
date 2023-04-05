@@ -13,8 +13,10 @@ html, body {
 
 .article-container {
     height: 200px;
+    font-size: 12px;
     display: flex;
     cursor: pointer;
+    font-weight: 400;
 }
 
 .date-container {
@@ -24,7 +26,7 @@ html, body {
 
 .foot-container {
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 50px 1fr;
 }
 
 .foot-container .btn-container {
@@ -33,4 +35,17 @@ html, body {
 }
 .article_date {
     font-size: 10px;
+}
+
+.votes {
+    font-size: 12px;
+}
+
+.icon-edit-container {
+    display: grid;
+    place-items: end;
+}
+
+.icon-edit-container span{
+    cursor: pointer;
 }

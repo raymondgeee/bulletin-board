@@ -32,19 +32,22 @@
             <% articles.forEach((article) => { %>
             <div class="col-md-4 w3-padding-top">
                 <div class="w3-border w3-padding">
-                    <div class="w3-center">
+                    <div class="w3-center articleTitle">
                         <h4><%= article.title %></h4>
                     </div>
                     <hr>
+                    <div class="icon-edit-container">
+                        <span class="fa fa-edit"></span>
+                    </div>
                     <div class="article-container">
-                        <%= article.id %>
+                        <%= article.content %>
                     </div>
                     <div class="date-container">
                         <label class="article_date">Date: <%= article.created_at %></label>
                     </div>
                     <div class="foot-container">
                         <div class="vote-container">
-                            <label class="votes">Votes: <%= article.votes %></label>
+                            <label class="votes"><%= article.votes %> Likes</label>
                         </div>
                         <div class="btn-container">
                             <button class='w3-btn w3-tiny w3-round w3-indigo removeArticle' onclick="removeArticle('<%= article.id %>')" ><b>Delete Article</b></button>
