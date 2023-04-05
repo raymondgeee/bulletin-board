@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bulletin Board</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class='container-fluid'>
+        <div class='row'>
+            <div class="w3-container w3-black w3-card-2 w3-padding">
+                <label class='w3-large'>Bulletin Board</label>
+            </div>
+        </div>
+    </div>
+    <div class='container w3-padding-top'>
+        <div class='row'>
+            <div class='col-md-12'>
+                <h4><%= article.title %></h4>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-12'>
+                <div class='article-content'>
+                    <%= article.content %>
+                </div>
+                <!-- <span class="fa fa-thumbs-up fa-2x"></span> -->
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-12'>
+                <div class="article-comments w3-padding-top">
+                    <div class="comment_block">
+                        <div class="article-comment-form">
+                            <form method="POST" action="/articles/<%= article.id %>/comments">
+                                <textarea type="text" name="comments" class="w3-input w3-border" rows="" placeholder="Write a comment"></textarea>
+                                <button type="submit" class='w3-btn w3-tiny w3-round w3-indigo'><b>Send</b></button>
+                            </form>
+                        </div>
+                        <div class="new_comment">
+                            <ul class="user_comment">
+                                <% article.comments.forEach((comment) => { %>
+                                <li>
+                                    <div class="comment_body">
+                                        <p>
+                                            <div class="">
+                                                <p><%= comment.content %></p>
+                                            </div>
+                                        </p>
+                                    </div>
+                                    <div class="comment_toolbar">
+                                        <div class="comment_details">
+                                            <ul>
+                                                <% 
+                                                    let dateTime = comment.created_at
+                                                    let split = dateTime.split(' ')
+                                                    let date = split[0]
+                                                    let time = split[1]
+                                                %>
+                                                <li><i class="fa fa-clock-o"></i> <%= time %></li>
+                                                <li><i class="fa fa-calendar"></i> <%= date %></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='container w3-padding-12'>
+        <div class='row'>
+            
+        </div>
+    </div>
+</body>
+</html>
+

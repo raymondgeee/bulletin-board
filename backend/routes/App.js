@@ -34,16 +34,14 @@ router.post('/articles', (req, res) => {
     }
 
     let count = (articles.length) ? articles.length - 1 : 0;
-    let idNew = (count > 0) ? Number(articles[count].id) + 1 : 1;
+    let idNew = (articles.length > 0) ? Number(articles[count].id) + 1 : 1;
     let now = nodeDate.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     
     const newArticle = {
         id: idNew,
         title: title,
         content: content,
-        comments: [
-            {}
-        ],
+        comments: [],
         author: `RG${idNew}`,
         votes: 0,
         created_at : now
@@ -62,7 +60,31 @@ router.post('/articles', (req, res) => {
 
 // View article
 router.get('/articles/:id', (req, res) => {
-  // TODO: implement
+    const { id } = req.params
+
+    if (fs.existsSync(articlesFilePath)) {
+        const getArticle = (id) => {
+            const articlesObj = JSON.parse(fs.readFileSync(articlesFilePath, 'utf8'));
+            const article = articlesObj.find(art => art.id === Number(id));
+
+            if (article) {
+                articlesObj.forEach(articlesObj => {
+                    articlesObj.comments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                });
+
+                return article;
+            } else {
+                return false;
+            }
+        } 
+        if (getArticle(id)) {
+            res.render('fullview', { article: getArticle(id) });
+        } else {
+            res.redirect('/')
+        }
+    } else {
+        console.error(`Error: File ${articlesFilePath} not found`);
+    }
 });
 
 // Edit article form
@@ -99,7 +121,32 @@ router.post('/articles/:id/upvote', (req, res) => {
 
 // Comment on article
 router.post('/articles/:id/comments', (req, res) => {
-  // TODO: implement
+    const { id } = req.params
+    const { comments } = req.body
+    if (fs.existsSync(articlesFilePath)) {
+        const articlesObj = JSON.parse(fs.readFileSync(articlesFilePath, 'utf8'));
+        const article = articlesObj.find(art => art.id === Number(id));
+
+        let now = nodeDate.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
+        let count = (article.comments.length) ? article.comments.length - 1 : 0;
+        let idNew = (article.comments.length > 0) ? Number(article.comments[count].id) + 1 : 1;
+
+        const newComment = {
+            id: idNew, 
+            content: comments, 
+            author: 'RG', 
+            created_at: now
+        }
+
+        article.comments.push(newComment);
+
+        const updated= JSON.stringify(articlesObj, null, 2);
+        fs.writeFileSync(articlesFilePath, updated);
+
+        res.redirect(`/articles/${id}`)
+    } else {
+        console.error(`Error: File ${articlesFilePath} not found`);
+    }
 });
 
 module.exports = router;
